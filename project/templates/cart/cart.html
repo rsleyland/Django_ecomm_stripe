@@ -1,0 +1,82 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block head %}
+
+<title>Site Name - Cart</title>
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+<script>
+    function emptyCartConfirm() {
+        if (confirm("Are you sure you want to empty your cart?")) {
+            window.location.href ="{% url 'cart_empty'  %}"
+        }
+    }
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <h3>Cart</h3>
+
+        <form id="form_cont" method="post" action="{% url 'cart_update' %}">
+            {% csrf_token %}
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if not items %}
+                <tr> <td colspan="5">Cart is Empty</td> </tr>
+                {% endif %}
+
+                {% for item in items %}
+                <tr>
+                    <td><a href="{% url 'product_detail' item.item.prod_name %}"><img class="product-img" src="{{item.item.thumbnail.url}}"></a></td>
+                    <td><a href="{% url 'product_detail' item.item.prod_name %}">{{item.item.prod_name}}</a></td>
+                    <td><input min="0" max="20" type="number" name="{{item.item.prod_name}}-quantity" value="{{item.quantity}}"></td>
+                    <td>{{item.item.price}}</td>
+                    <td>{{item.total}}</td>
+                    <td></td>
+                    <td><a href="{% url 'cart_remove' item.item.prod_name %}"><button type="button" class="btn btn-danger">Delete</button></a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <button class="btn btn-warning" type="submit">Update Cart</button>
+            <button onclick="emptyCartConfirm()" class="btn btn-danger" type="button">Empty Cart</button>
+        </form>
+        <br>
+
+        <div class="mx-5">
+        <hr>
+        <div class="row">
+            <div class="col-6 text-center align-self-center">
+                <a href="{% url 'pre_checkout' %}"><button class="btn btn-success" >Proceed to Checkout</button></a>
+            </div>
+            <div class="col-6">
+                <h6>Subtotal: ${{cart.subtotal}}<small>&nbsp; CAD</small></h6>
+                <h6>Tax: ${{tax}}<small>&nbsp; CAD</small></h6>
+                <h4>Total: ${{after_tax}}<small>&nbsp; CAD</small></h4>
+            </div>
+        </div>
+        
+
+        <hr>
+        
+        </div>
+
+        
+    </div>
+
+{% endblock %}

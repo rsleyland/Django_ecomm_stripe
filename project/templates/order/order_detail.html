@@ -1,0 +1,11 @@
+<html lang="en">
+
+<h4>Ordered By: {{ data.owner}}</h4>
+
+{% for item in data.items %}
+    <h4>Item: {{ item.product.prod_name}} &nbsp; | &nbsp; Price: {{ item.product.price}} 
+        &nbsp; | &nbsp; End: {{ item.product.ending_date}}</h4>
+{% endfor %}
+
+
+</html>

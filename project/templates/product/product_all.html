@@ -1,0 +1,53 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block head %}
+
+<title>Site Name - Profile</title>
+<script>
+
+    window.addEventListener("load", function(){
+        setTimeout(function(){
+            if (document.body.contains(document.getElementById("success-message"))){
+                document.getElementById('success-message').style.display = 'none';
+            }
+        }, 1500)
+    });
+
+</script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <h3>Products</h3>
+
+        {% if message %}
+                <h6 id="success-message" style="color: rebeccapurple;">{{message}}</h6>
+            {% endif %}
+
+        <div class="row mt-3 mt-lg-5 justify-content-center">
+            
+            {% for item in context %}
+
+                <div class="card col-11 col-sm-10 col-md-8 col-lg-5 col-xl-3 m-4">
+                    <img src="{{item.prod.thumbnail.url}}" class="card-img-top mx-auto" style="width: 15vw; height: 15vh;" >
+                    <div class="card-body text-center">
+                    
+                    <form method="post" action="{% url 'products' %}">
+                        {% csrf_token %}
+                        <h5 class="card-title">{{item.prod.prod_name }}</h5>
+                        <p class="card-text">{{item.prod.desc}}</p>
+                        <p class="card-text">{{item.prod.price}}</p>
+                        <input hidden type="text" name="product_name" value='{{item.prod.prod_name }}'> <!-- used to pass item info to cart-->
+                        <a href="{% url 'product_detail' item.prod.prod_name %}"><button class="btn btn-primary" type="button">More info</button></a>
+                        <button class="btn btn-primary" type="submit">Add To Cart</a>
+                    </form>
+                    </div>
+                </div>
+
+            {% endfor %}
+        
+        </div>
+    </div>
+
+{% endblock %}

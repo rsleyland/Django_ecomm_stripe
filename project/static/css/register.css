@@ -1,0 +1,40 @@
+
+.form-lbl {
+    font-size: 20px;
+}
+
+.form-inp {
+    font-size: 16px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px;
+}
+
+#submit-btn {
+    border-radius: 20px;
+    width: 90%;
+    height: 70px;
+    margin: auto;
+}
+
+.main_area{
+    box-shadow: black 2px 2px 2px;
+    background: rgb(230, 230, 230);
+    padding: 0 20px;
+}
+
+#main_area_top{
+    box-shadow: black 2px 2px 2px;
+    border-radius: 10px 10px 0 0;
+    background: rgb(230, 230, 230);
+    padding: 0 20px;
+}
+#main_area_bot{
+    box-shadow: black 2px 2px 2px;
+    border-radius: 0 0 10px 10px;
+    background: rgb(230, 230, 230);
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}

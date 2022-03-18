@@ -1,0 +1,12 @@
+#submit_btn {
+    width: 100%;
+}
+#reset_btn {
+    width: 75%;
+    font-size: 12px;
+    margin-right: 40px;
+}
+
+#forgot_pass_text {
+    font-size: 12px;
+}

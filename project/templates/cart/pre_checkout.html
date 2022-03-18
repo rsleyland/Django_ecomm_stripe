@@ -1,0 +1,94 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block head %}
+
+<title>Site Name - PreCheckout</title>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <h3>Checkout</h3>
+
+
+        <form class="p-2 mx-5" id="register_form" method="post" action="{% url 'pre_checkout' %}">
+    
+            <div id="update_acc_sect">
+                
+                <h4 class="mb-3">Account Details</h4>
+
+                {% if errors %}
+                <li style="color: red; margin-bottom: 20px;">{{errors}}</li>
+                {% endif %}
+    
+                {% csrf_token %}
+    
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">{{ form.first_name.label }}</label>
+                            <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}" >
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="street" class="form-label">{{ form.street.label }}</label>
+                            <input type="text" class="form-control" name="street" value="{{ data.street }}">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label">{{ form.last_name.label }}</label>
+                            <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="city" class="form-label">{{ form.city.label }}</label>
+                            <input type="text" class="form-control" name="city" value="{{ data.city }}">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">{{ form.email.label }}</label>
+                            <input disabled type="email" class="form-control" name="email" value="{{ user.email }}">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="postcode" class="form-label">{{ form.postcode.label }}</label>
+                            <input type="text" class="form-control" name="postcode" value="{{ data.postcode }}">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="phone_number" class="form-label">Phone Number</label>
+                            <input type="number" class="form-control" name="phone_number" value="{{ data.phone_number }}">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="country" class="form-label">{{ form.country.label }}</label><br>
+                            {{ form.country }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row justify-content-around mt-3">
+                    <button type="submit" class="btn btn-success submit-btn" style="width: 80%;">Checkout</button>
+                </div>
+    
+            </div>
+        </form>
+
+
+
+
+
+
+
+
+    </div>
+
+{% endblock %}

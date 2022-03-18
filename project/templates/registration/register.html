@@ -1,0 +1,109 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block head %}
+
+<title>Site Name - Register</title>
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+  <form id="register_form" method="post" action="{% url 'register' %}" enctype='multipart/form-data'>
+      {% csrf_token %}
+
+      <div class="row justify-content-center">
+        <div id="main_area_top" class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+          <h3 id="register_header" class="my-4">Register</h3>
+          <div class="mb-1">
+              <label for="email" class="form-label">Email address</label>
+              <input type="text" class="form-control" name="email">
+          </div>
+          <div id="emailHelp" class="form-text mb-2">We'll never share your email with anyone else.</div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-4 main_area">
+          <div class="mb-3">
+            <label for="first_name" class="form-label">First Name</label>
+            <input type="text" class="form-control" name="first_name">
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-4 main_area">
+          <div class="mb-3">
+            <label for="last_name" class="form-label">Last Name</label>
+            <input type="text" class="form-control" name="last_name">
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-4 main_area">
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password">
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-4 main_area">
+          <div class="mb-3">
+            <label for="password_confirm" class="form-label">Password Confirm</label>
+            <input type="password" class="form-control" name="password_confirm">
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-4 main_area">
+          <div class="mb-3">
+            <label for="image" class="form-label">Profile Picture</label>
+            <input type="file" class="form-control" name="image">
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-4 main_area">
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="signup_check">
+            <label class="form-check-label" for="signup_check">Sign me up</label>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-4 main_area d-flex justify-content-center py-4">
+          <button id="submit-btn" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div id="main_area_bot" class="col-11 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+
+        {% for error in errors %}
+          {% if error|striptags == "This field is required." %}
+            <p>Missing Fields</p>
+          {% elif error|striptags == "password and confirm_password does not match" %}
+            <p>Password fields did not match</p>
+          {% elif error|striptags == "password too short - must be at least 8 characters" %}
+            <p>Password needs to be at least 8 characters</p>
+          {% endif%}
+        {% endfor %}
+
+      </div>
+    </div>
+
+
+
+
+      
+
+    </form>
+
+    <br>
+  
+  </div>
+
+
+{% endblock %}

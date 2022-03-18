@@ -1,0 +1,42 @@
+{% extends "../base.html" %}
+
+{% load static %}
+
+{% block head %}
+
+<title>Hello</title>
+<link rel="stylesheet" href="{% static 'css/basic_forms.css' %}">
+{% endblock %}
+
+
+
+{% block content %}
+<div id="content">
+    <h3>Confirm Account</h3>
+    <p>Enter email confirmation code below</p>
+
+
+
+    <form id="form_cont" method="post" action="{% url 'confirm_code' %}">
+        {% csrf_token %}
+        
+        <div>
+        <td id="code_label">{{ form.code.label_tag }}</td>
+        <td>{{ form.code }}</td>
+        </div>
+        
+        <div>
+        <button id="submit_btn" type="submit">Submit</button>
+        <!-- <input id="submit_btn" type="submit" value="Submit" /> -->
+        </div>
+    </form>
+
+    {% for error in errors%}
+        {{error}}
+    {% endfor %}
+
+
+    <p>Send confirmation code again?...</p>
+</div>
+{% endblock %}
+

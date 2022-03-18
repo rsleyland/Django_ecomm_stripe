@@ -1,0 +1,272 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block head %}
+
+<title>Site Name - Profile</title>
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+{% endblock %}
+
+{% block content %}
+
+<div id="user_email_cont">
+    {% if user.image %}
+        <img id="profile-pic" src="{{user.image.url}}">
+        {% else %}
+        <img id="profile-pic" src="../project/media/images/blank-profile-picture.png">
+    {% endif %}
+    
+    <h5 id="user_email">{{user.email}}</h5>
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- START -->
+
+
+    <div class="p-2 mx-5">
+        <div class="profile_header" onclick="toggleBlockIcon('orders_acc_sect','account-orders-toggle')">
+            <i id="account-orders-toggle" class="bi bi-caret-right me-3"></i>
+            <h4 class="mb-3">Previous Orders</h4>
+        </div>
+        <br>
+        <div id="orders_acc_sect"  style="display: none;">
+            <div class="row justify-content-center">
+
+                {% if not order_data %}
+                    <tr><td colspan="5">No Orders</td> </tr>
+                {% endif %}
+
+                {% for iter in order_data %}
+                {% if iter.order.is_paid %}
+                
+                <div class="my-4 ">
+                    <div class="d-flex justify-content-around flex-wrap">
+                        <h5>Order ID: {{iter.order.id}}</h5>
+                        <p>Order Date: {{iter.order.date_added}}</p>
+                        <p>Subtotal: ${{iter.order.subtotal}}</p>
+                        <p>Total (+15% tax): ${{iter.order.total}}</p>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Subtotal</th>
+                                <th scope="col">Total (+15% tax)</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            {% for item in iter.items %}
+                            <tr>
+                                <td><img style="width: 40px; height: 40px;" src="{{item.product.thumbnail.url}}"></td>
+                                <td>{{item.product.prod_name}}</td>
+                                <td>{{item.product.price}}</td>
+                                <td>{{item.quantity}}</td>
+                                <td>${{item.subtotal}}</td>
+                                <td>${{item.total}}</td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+
+                        
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+                {% endfor %}
+
+
+                
+                
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- END -->
+    <br>
+
+    <form class="p-2 mx-5" id="register_form" method="post" action="{% url 'profile' %}">
+
+        <div class="profile_header" onclick="toggleBlockIcon('update_acc_sect','account-update-toggle')">
+            <i id="account-update-toggle" class="bi bi-caret-right me-3" ></i>
+            <h4 class="mb-3">Address Details</h4>
+        </div>
+        <br>
+
+        <div id="update_acc_sect" >
+
+            {% if errors %}
+            <li style="color: red; margin-bottom: 20px;">{{errors}}</li>
+            {% endif %}
+
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">{{ form.first_name.label }}</label>
+                        <input type="text" class="form-control inp" name="first_name" value="{{ user.first_name }}" >
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="street" class="form-label">{{ form.street.label }}</label>
+                        <input type="text" class="form-control inp" name="street" value="{{ data.street }}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">{{ form.last_name.label }}</label>
+                        <input type="text" class="form-control inp" name="last_name" value="{{ user.last_name }}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="city" class="form-label">{{ form.city.label }}</label>
+                        <input type="text" class="form-control inp" name="city" value="{{ data.city }}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">{{ form.email.label }}</label>
+                        <input disabled type="email" class="form-control inp" name="email" value="{{ user.email }}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="postcode" class="form-label">{{ form.postcode.label }}</label>
+                        <input type="text" class="form-control inp" name="postcode" value="{{ data.postcode }}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Phone Number</label>
+                        <input type="number" class="form-control inp" name="phone_number" value="{{ data.phone_number }}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="country" class="form-label">{{ form.country.label }}</label><br>
+                        {{ form.country }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row justify-content-around mt-3">
+                <button type="submit" class="btn btn-primary submit-btn">Update</button>
+                <button type="button" onclick="clearFields()" class="btn btn-danger submit-btn">Clear</button>
+            </div>
+
+        </div>
+    </form>
+
+    <br>
+
+    <div class="p-2 mx-5">
+        <div class="profile_header" onclick="toggleBlockIcon('delete_acc_sect','account-remove-toggle')">
+            <i id="account-remove-toggle" class="bi bi-caret-right me-3" ></i>
+            <h4 class="mb-3">Advanced</h4>
+        </div>
+        <br>
+        <div id="delete_acc_sect" class="m-3" style="display: none;">
+            <h5>Update Email</h5>
+            <p style="color: rebeccapurple;" id='update-email-message'></p>
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-10">
+                    <div class="mb-3">
+                        <label for="email_email" class="form-label">New email</label>
+                        <input type="email" class="form-control inp" name="email_email" value="{{ user.email }}">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-10">
+                    <div class="mb-3">
+                        <label for="password_email" class="form-label">Password</label>
+                        <input type="password" class="form-control inp" name="password_email" >
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-6 col-10">
+                    <div class="m-3">
+                        <button id="update_email_btn" type="button" class="btn btn-primary submit-btn">Update Email</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <h5>Update Password</h5>
+            <p style="color: rebeccapurple;" id='update-password-message'></p>
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-10">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Current Password</label>
+                        <input type="password" class="form-control inp" name="password">
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6 col-10">
+                            <div class="mb-3">
+                                <label for="new_password" class="form-label">New Password</label>
+                                <input type="password" class="form-control inp" name="new_password" >
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-10">
+                            <div class="mb-3">
+                                <label for="new_password_confirm" class="form-label">New Password Confirm</label>
+                                <input type="password" class="form-control inp" name="new_password_confirm" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-6 col-10">
+                    <div class="m-3">
+                        <button type="button" class="btn btn-primary submit-btn" id="update_password_btn">Update Password</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <h5>Delete Account</h5>
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-10 text-center">
+                    <button type="button" class="btn btn-danger submit-btn" onclick="deleteAccount()">Delete Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+
+<!-- JAVASCRIPT IMPORTS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="{% static 'js/user_profile.js' %}"></script>
+<script>
+    function deleteAccount() {
+        if (confirm("Are you sure you want to delete your account? Pressing OK will Delete your account")) {
+            window.location.href = "{% url 'delete' %}";
+        }
+    }
+</script>
+{% endblock %}
+
